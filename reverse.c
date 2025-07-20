@@ -73,13 +73,17 @@ Node* save_lines(FILE *file) {
         }
         tail = new_node; // Update the tail to the new node
     }
-
-    free(line);
-    return head;
 }
 
-
-
+// a function to free up the list. Information from this page was used to understand how to free a list: https://stackoverflow.com/questions/6417158/c-how-to-free-nodes-in-the-linked-list
+void free_list(Node *tail) {
+    Node *current = tail; // Start from the tail of the list
+    while (current != NULL) {
+        current = tail; //Update current to match the new tail
+        tail = tail->prev; //Move tail down the list
+        free(current);
+    }
+}
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         perror("To use this program: ./reverse input.txt\n");
@@ -96,5 +100,4 @@ int main(int argc, char *argv[]) {
     fclose(file);
     print_lines(tail);
     free_list(tail);
-    return 0;
-}
+    return 0;}
