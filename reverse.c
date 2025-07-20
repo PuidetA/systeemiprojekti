@@ -91,10 +91,16 @@ Node* save_lines(FILE *file) { // I'll comment this in detail line-by-line, sinc
 void free_list(Node *tail) {
     Node *current = tail;
     while (current != NULL) {
+<<<<<<< HEAD
         Node *prev = current->prev;
         free(current->line);
         free(current);
         current = prev;
+=======
+        Node *prev = current->prev; 
+        free(current);
+        current = prev; //Updating current to match new tail
+>>>>>>> 131ea736890905a1352178d7e7d7006a6a49dd02
     }
 }
 
