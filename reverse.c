@@ -12,7 +12,7 @@
 // How we reverse the file:
 // 1. Open the file with fopen r.
 // 2. Read the file line by line, storing each line in a dynamic data structure. (in this case: a doubly linked list)
-// 3. Print out the lines in reverse from said array.
+// 3. Print out the lines in reverse from said doubly linked list.
 // 4. Free the memory and close the file.
 
 #include <stdio.h>
@@ -34,18 +34,25 @@ void print_lines(Node *tail) {
     Node *current = tail; // Start from the very back of the list
     while (current != NULL){
         printf("%s", current->line);
+        // Print a newline if line doesn't end with it.
+        size_t len = strlen(current->line); //source used: 
+        if (len == 0 || current->line[len - 1] != '\n') {
+            printf("\n");
+        }
         current = current->prev; // Move backwards through the entire list, if we finished (NULL), then we stop
     }
 }
 
 
-Node* save_lines(FILE *file) {
-    char *line = NULL;
-    size_t len = 0;
-    ssize_t read;
-    Node *head = NULL;
-    Node *tail = NULL;
-    Node *new_node = (Node *)malloc(sizeof(Node)); // memory allocate next line
+
+// Nothing explicitly copied, but used to understand how doubly linked list saving works and how I could possibly implement it: https://youtu.be/KFbm6lkMhgw
+// Also used this to understand doubly linked lists: https://medium.com/@Dev_Frank/c-linked-list-doubly-linked-list-561851cd732a
+Node* save_lines(FILE *file) { // I'll comment this in detail line-by-line, since it's the most difficult part.
+    char *line = NULL; // We hold each line that we get from the file.
+    size_t len = 0; // Initialize the length of the line to 0, so getline can allocate memory for it.
+    ssize_t read; // Return of getline.
+    Node *head = NULL; // This will be the head of the list
+    Node *tail = NULL; // This will be the tail of the list
 
     while ((read = getline(&line, &len, file)) != -1) {
         char *line_copy = malloc(read + 1);
@@ -54,10 +61,11 @@ Node* save_lines(FILE *file) {
             exit(1);
         }
 
-        strcpy(line_copy, line);
+        strncpy(line_copy, line, read);
+        line_copy[read] = '\0';
         Node *new_node = malloc(sizeof(Node));
         if (new_node == NULL) {
-            fprintf(stderr, "Malloc failed.");
+            fprintf(stderr, "Malloc failed for node allocation.");
             exit(1);
         }
 
@@ -73,20 +81,27 @@ Node* save_lines(FILE *file) {
         }
         tail = new_node; // Update the tail to the new node
     }
+    
+    // Free the line buffer allocated by getline
+    free(line);
+    return tail;
 }
 
 // a function to free up the list. Information from this page was used to understand how to free a list: https://stackoverflow.com/questions/6417158/c-how-to-free-nodes-in-the-linked-list
 void free_list(Node *tail) {
-    Node *current = tail; // Start from the tail of the list
+    Node *current = tail;
     while (current != NULL) {
-        current = tail; //Update current to match the new tail
-        tail = tail->prev; //Move tail down the list
+        Node *prev = current->prev;
+        free(current->line);
         free(current);
+        current = prev;
     }
 }
+
+
 int main(int argc, char *argv[]) {
     if (argc != 2) {
-        perror("To use this program: ./reverse input.txt\n");
+        fprintf(stderr, "Usage: ./reverse input.txt\n");
         exit(1);
     }
     
@@ -96,8 +111,9 @@ int main(int argc, char *argv[]) {
         exit(1); //error
     }
 
-    Node *tail = save_lines(file);
-    fclose(file);
-    print_lines(tail);
-    free_list(tail);
-    return 0;}
+        Node *tail = save_lines(file);
+        fclose(file);
+        print_lines(tail);
+        free_list(tail);
+        return 0;
+}
