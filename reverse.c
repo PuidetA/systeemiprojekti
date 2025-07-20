@@ -44,7 +44,14 @@ void reverse(char *filename) {
         perror("Error opening the file. (No file found)");
         return 1; //error
     }
+}
 
-
-
+// a function to free up the list. Information from this page was used to understand how to free a list: https://stackoverflow.com/questions/6417158/c-how-to-free-nodes-in-the-linked-list
+void free_list(Node *head) {
+    Node *current = head; // Start from the head of the list
+    while (current != NULL) {
+        current = head; //Update current to match the new head
+        head = head->next; //Move head up the list
+        free(current);
+    }
 }
