@@ -29,6 +29,13 @@ typedef struct Node {
 } Node;
 
 
+void print_line(Node *tail) {
+    Node *current = tail; // Start from the very back of the list
+    while (current != NULL){
+        printf("%s", current->line);
+        current = current->prev; // Move backwards through the entire list, if we finished (NULL), then we stop
+    }
+}
 
 void reverse(char *filename) {
     // functionality to open the file from: https://www.tutorialspoint.com/c_standard_library/c_function_fopen.htm
