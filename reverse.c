@@ -79,9 +79,9 @@ Node* save_lines(FILE *file) {
 void free_list(Node *tail) {
     Node *current = tail; // Start from the tail of the list
     while (current != NULL) {
-        current = tail; //Update current to match the new tail
-        tail = tail->prev; //Move tail down the list
+        Node *prev = current->prev; 
         free(current);
+        current = prev; //Updating current to match new tail
     }
 }
 int main(int argc, char *argv[]) {
