@@ -21,15 +21,16 @@
 
 
 // used this tutorial to understand doubly linked lists: https://www.geeksforgeeks.org/c/linked-list-in-c/
+// and https://www.geeksforgeeks.org/c/how-to-create-a-doubly-linked-list-in-c/
 
-typedef struct Node {
+typedef struct Node { // used https://www.geeksforgeeks.org/c/how-to-create-a-doubly-linked-list-in-c/ to figure out typedef
     char *line;
     struct Node *next;
     struct Node *prev;
 } Node;
 
 
-void print_line(Node *tail) {
+void print_lines(Node *tail) {
     Node *current = tail; // Start from the very back of the list
     while (current != NULL){
         printf("%s", current->line);
@@ -37,14 +38,63 @@ void print_line(Node *tail) {
     }
 }
 
-void reverse(char *filename) {
-    // functionality to open the file from: https://www.tutorialspoint.com/c_standard_library/c_function_fopen.htm
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        perror("Error opening the file. (No file found)");
-        return 1; //error
+
+Node* save_lines(FILE *file) {
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    Node *head = NULL;
+    Node *tail = NULL;
+    Node *new_node = (Node *)malloc(sizeof(Node)); // memory allocate next line
+
+    while ((read = getline(&line, &len, file)) != -1) {
+        char *line_copy = malloc(read + 1);
+        if (line_copy == NULL) {
+            fprintf(stderr, "Malloc line copying failed.");
+            exit(1);
+        }
+
+        strcpy(line_copy, line);
+        Node *new_node = malloc(sizeof(Node));
+        if (new_node == NULL) {
+            fprintf(stderr, "Malloc failed.");
+            exit(1);
+        }
+
+        new_node->line = line_copy;
+        new_node->next = NULL;
+        new_node->prev = tail;
+        
+        if (tail) {
+            tail->next = new_node; // Link the new node to the end of the list
+        }
+        else {
+            head = new_node; // Update the head to the new node
+        }
+        tail = new_node; // Update the tail to the new node
     }
 
+    free(line);
+    return head;
+}
 
 
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        perror("To use this program: ./reverse input.txt\n");
+        exit(1);
+    }
+    
+    FILE *file = fopen(argv[1], "r");
+    if (file == NULL) {
+        fprintf(stderr, "error: cannot open file '%s'\n", argv[1]);
+        exit(1); //error
+    }
+
+    Node *tail = save_lines(file);
+    fclose(file);
+    print_lines(tail);
+    free_list(tail);
+    return 0;
 }
