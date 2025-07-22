@@ -4,7 +4,7 @@
 //A program to copy the functionality of the "cat" command
 int main(int argc, char *argv[]) {
     //Checking to see if any files have actually been provided to read
-    if (argc == 0) {
+    if (argc < 2) {
         fprintf(stderr, "Please provide files to search.\n");
         exit(1);
     }
