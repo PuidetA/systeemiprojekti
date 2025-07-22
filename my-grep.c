@@ -30,17 +30,19 @@ int main(int argc, char *argv[]) {
         perror("Error: my-grep: searchterm [file...]\n");
         exit(1); // If there are no arguments the program exits with error code 1
     }
-    //Using  a while loop to move through the provided files
+    // Using  a while loop to move through the provided files
     int i = 2; //The value of i is set to 2, as the first argument represents the search term rather than a file
     char *search_term = argv[1];
+    // If there are only two arguments (program itself and search word), the program greps from stdin
     if (argc == 2) {
         grep_file(stdin, search_term);
     }
+    // This part determines normal operation, with files provided
     else {
          //Using  a while loop to move through the provided files
         while (i < argc) {
             FILE *currentfile = fopen(argv[i], "r");
-            if (currentfile == NULL) {
+            if (currentfile == NULL) { // Error handling for when files can't be opened
                 perror("Error: Cannot open file.\n");
                 exit(1); //If a file can't be opened, the program exits.
             }
@@ -49,5 +51,5 @@ int main(int argc, char *argv[]) {
             i++; // i is incremented
             }
         }
-        return 0;
+    return 0;
     }
