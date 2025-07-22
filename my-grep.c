@@ -5,15 +5,15 @@
 
 // This function searches the file for lines matching the search term and prints them
 // How this was done was learned mostly from https://man7.org/linux/man-pages/man3/getline.3.html and https://man7.org/linux/man-pages/man3/strstr.3.html
-void grep_file(FILE currentfile, char search_term) {
+void grep_file(FILE *currentfile, char *search_term) {
     char *line = NULL;
     size_t len = 0;
     // The function will go through all the lines to see if they match the search term
     while (getline(&line, &len, currentfile) != -1) {
         if (strstr(line, search_term)) { // If a substring matching the search term is found, line is printed
-            fprintf(line);
-            if (len == 0 || current->line[len - 1] != '\n') { // If a line does not end in a newline, one is added
-                fprintf('\n');
+            printf("%s", line);
+            if (len == 0 || currentfile->line[len - 1] != '\n') { // If a line does not end in a newline, one is added
+                printf('\n');
             }
         }
     }
