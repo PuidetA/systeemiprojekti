@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//A program to copy the functionality of the "cat" command
 int main(int argc, char *argv[]) {
     //Checking to see if any files have actually been provided to read
     if (argc == 0) {
@@ -9,7 +10,7 @@ int main(int argc, char *argv[]) {
     }
 
     //Opening and reading out the files
-    int i = 1;
+    int i = 1; //Setting the value of i to one, this is used to move through all the given files with a loop
     while (i < argc) {
         FILE *currentfile = fopen(argv[i], "r");
         //Check if the program can open the file
@@ -23,7 +24,7 @@ int main(int argc, char *argv[]) {
             printf("%s", buffer);
         }
         fclose(currentfile); //Closing the file
-        i++;
+        i++; //Increasing the value of i to move to the next file
     }
     return 0;
 }
