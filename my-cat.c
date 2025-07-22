@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 //A program to copy the functionality of the "cat" command
 int main(int argc, char *argv[]) {
