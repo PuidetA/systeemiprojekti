@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
             printf("%s", buffer);
 
             size_t len = strlen(buffer); // If no newline is detected at the end of each line, it will print a newline.
-            if (len > 0 && buffer[len-1] == "\n") {
+            if (len > 0 && buffer[len-1] != '\n') {
                 printf("\n");
             }
         }
