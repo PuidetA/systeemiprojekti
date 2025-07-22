@@ -41,4 +41,5 @@ int main(int argc, char argv[]) {
         i++; // i is incremented
         }
     }
+    return 0;
 }
