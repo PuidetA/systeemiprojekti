@@ -2,8 +2,22 @@
 // Made by:
 // Arlis Arto Puidet, 000422358
 // Miikka Kristian Niinikoski,
-
 // Date: 2025-07-22
+
+
+// To run this program:
+// gcc -o my_zip my-zip.c -Wall -Werror
+// ./my_zip source_file [source_file_2 source_file_3 ...] > destination_file
+
+
+// How we implemented the zipping function:
+// 1. Open file with fopen.
+// 2. Read the file line by line.
+// 3. We count each consecutive character and write the count + the character in question to stdout.
+// 4. Close the file after reading.
+// 5. Repeat until all files that were given are read and zipped into the stdout stream.
+
+
 
 // Instructions are included in the readme.md file.
 #include <stdio.h> // fwrite, fread, fopen, fclose
