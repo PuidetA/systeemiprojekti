@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     int i = 2; //The value of i is set to 2, as the first argument represents the search term rather than a file
     char *search_term = argv[1];
     if (argc == 2) {
-        grep_file(stdin, search_term)
+        grep_file(stdin, search_term);
     }
     else {
          //Using  a while loop to move through the provided files
