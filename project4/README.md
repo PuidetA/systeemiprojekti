@@ -1,3 +1,10 @@
+// Project 4: Kernel Hacking
+// Made by:
+// Arlis Arto Puidet
+// Miikka Kristian Niinikoski
+// Date: 2025-07-30
+
+
 # Instructions on how to get the program running
 
 
