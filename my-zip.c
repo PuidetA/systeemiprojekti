@@ -57,10 +57,12 @@ void zipping(FILE *fp) {
                 count = 1; // Reset the count for the new character
             }
         }
-        if (count > 0) {
-            fwrite(&count, sizeof(uint32_t), 1, stdout); // Write the count of the last character
-            fwrite(&prev_char, sizeof(int), 1, stdout); // Write the last character
-        }
+    }
+    
+    // After all inputs, we write the last character and its count.
+    if (count > 0) {
+        fwrite(&count, sizeof(uint32_t), 1, stdout); // Write the count of the last character
+        fwrite(&prev_char, sizeof(char), 1, stdout); // Write the last character
     }
     fclose(fp);
 }
@@ -71,7 +73,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     } else {
         for (int i = 1; i < argc; i++) {
-            FILE *fp = fopen(argv[i], "r"); // Assumption: the files are all .txt files.
+            FILE *fp = fopen(argv[i], "rb"); // Assumption:  We can use binary reading mode.
             if (fp == NULL) {
                 perror("Error: unable to open 1 or more source files; ending the program.");
                 exit(1);

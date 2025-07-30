@@ -44,6 +44,6 @@ int main(int argc, char *argv[]) {
         perror("How to use the program: ./my_unzip zipped_file");
         exit(1);
     }
-    unzipping(fopen(argv[1], "r"));
+    unzipping(fopen(argv[1], "rb"));
     return 0;
 }
